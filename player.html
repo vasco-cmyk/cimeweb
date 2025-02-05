@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineWeb - Player</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>CineWeb</h1>
+        <nav>
+            <button onclick="window.location.href='index.html'" class="back-btn">Voltar</button>
+        </nav>
+    </header>
+
+    <main class="player-container">
+        <div class="video-info">
+            <div class="movie-header">
+                <div class="movie-poster"></div>
+                <div class="movie-details">
+                    <h2 id="movie-title"></h2>
+                    <div class="movie-meta">
+                        <span id="movie-year"></span>
+                        <span id="movie-runtime"></span>
+                        <span id="movie-rating"></span>
+                    </div>
+                    <div id="movie-genres"></div>
+                    <p id="movie-description"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="video-player">
+            <video id="movie-player" controls>
+                Seu navegador não suporta o elemento de vídeo.
+            </video>
+        </div>
+
+        <div class="movie-extra-info">
+            <div class="cast-section">
+                <h3>Elenco Principal</h3>
+                <div id="movie-cast" class="cast-list"></div>
+            </div>
+
+            <div class="reviews-section">
+                <h3>Avaliações</h3>
+                <div id="movie-reviews"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="db.js"></script>
+    <script src="tmdb.js"></script>
+    <script src="player.js"></script>
+</body>
+</html> 

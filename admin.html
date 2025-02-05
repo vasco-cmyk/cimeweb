@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineWeb - Painel Admin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>CineWeb - Painel Administrativo</h1>
+        <nav>
+            <button onclick="window.location.href='index.html'" class="logout-btn">Sair</button>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <section class="admin-controls">
+            <h2>Gerenciar Filmes</h2>
+            <button onclick="showAddMovieForm()" class="add-movie-btn">Adicionar Novo Filme</button>
+        </section>
+
+        <section class="movie-list">
+            <h2>Lista de Filmes</h2>
+            <div id="admin-movies-container">
+                <!-- Lista de filmes com controles de edição -->
+            </div>
+        </section>
+
+        <!-- Modal para adicionar/editar filme -->
+        <div id="movie-modal" class="modal">
+            <div class="modal-content">
+                <h2>Adicionar Filme</h2>
+                <form id="movie-form">
+                    <div class="form-group">
+                        <label for="movie-search">Buscar Filme</label>
+                        <div class="search-container">
+                            <input type="text" id="movie-search" placeholder="Digite o nome do filme para buscar">
+                            <button type="button" onclick="searchTMDB()" class="search-btn">Buscar</button>
+                        </div>
+                    </div>
+                    <div id="search-results" class="search-results"></div>
+                    
+                    <div class="form-group">
+                        <label for="movie-title">Título</label>
+                        <input type="text" id="movie-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Capa do Filme</label>
+                        <div class="preview-image"></div>
+                        <input type="hidden" id="movie-image-url">
+                    </div>
+                    <div class="form-group">
+                        <label for="movie-video">Vídeo do Filme</label>
+                        <input type="file" id="movie-video" accept="video/*" required>
+                        <div class="upload-progress"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="movie-description">Descrição</label>
+                        <textarea id="movie-description" required></textarea>
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit" class="submit-btn">Salvar</button>
+                        <button type="button" class="cancel-btn" onclick="closeMovieModal()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Adicionar o db.js antes do admin.js -->
+    <script src="db.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html> 

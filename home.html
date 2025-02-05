@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineWeb - Filmes</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>CineWeb</h1>
+        <nav>
+            <button onclick="showFavorites()" class="favorites-btn">
+                Meus Favoritos
+            </button>
+            <button onclick="window.location.href='index.html'" class="logout-btn">Sair</button>
+        </nav>
+    </header>
+
+    <main id="movies-container">
+        <!-- Os filmes serão inseridos aqui via JavaScript -->
+    </main>
+
+    <script src="db.js"></script>
+    <script>
+        const currentUser = localStorage.getItem('currentUser');
+        const userFavorites = JSON.parse(localStorage.getItem(`favorites_${currentUser}`)) || [];
+        let showingFavorites = false;
+
+        function toggleFavorite(movieId, event) {
+            event.stopPropagation();
+            const favoriteIndex = userFavorites.indexOf(movieId);
+            const heartBtn = event.currentTarget;
+            
+            if (favoriteIndex === -1) {
+                userFavorites.push(movieId);
+                heartBtn.classList.add('active');
+            } else {
+                userFavorites.splice(favoriteIndex, 1);
+                heartBtn.classList.remove('active');
+            }
+            
+            localStorage.setItem(`favorites_${currentUser}`, JSON.stringify(userFavorites));
+        }
+
+        function showFavorites() {
+            showingFavorites = !showingFavorites;
+            const btn = document.querySelector('.favorites-btn');
+            btn.classList.toggle('active');
+            loadMovies();
+        }
+
+        async function loadMovies() {
+            const container = document.getElementById('movies-container');
+            container.innerHTML = '';
+
+            try {
+                let movies = await MovieDB.getAllMovies();
+                
+                if (showingFavorites) {
+                    movies = movies.filter(movie => userFavorites.includes(movie.id));
+                }
+
+                if (movies.length === 0) {
+                    container.innerHTML = '<p class="no-movies">Nenhum filme disponível.</p>';
+                    return;
+                }
+
+                movies.forEach((movie) => {
+                    const movieCard = document.createElement('div');
+                    movieCard.className = 'movie-card';
+                    const isFavorite = userFavorites.includes(movie.id);
+                    
+                    movieCard.innerHTML = `
+                        <img src="${movie.image}" alt="${movie.title}">
+                        <button onclick="toggleFavorite(${movie.id}, event)" 
+                                class="favorite-btn ${isFavorite ? 'active' : ''}">
+                            ♥
+                        </button>
+                        <h3>${movie.title}</h3>
+                    `;
+                    
+                    movieCard.onclick = () => {
+                        window.location.href = `player.html?id=${movie.id}`;
+                    };
+                    container.appendChild(movieCard);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar filmes:', error);
+                container.innerHTML = '<p class="error">Erro ao carregar filmes</p>';
+            }
+        }
+
+        // Carregar filmes quando a página carregar
+        document.addEventListener('DOMContentLoaded', loadMovies);
+    </script>
+</body>
+</html> 
